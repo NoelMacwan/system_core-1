@@ -80,6 +80,18 @@ void restart_root_service(int fd, void *cookie) {
             return;
         }
 
+        char build_type[PROPERTY_VALUE_MAX];
+        char slim_version[PROPERTY_VALUE_MAX];
+        property_get("persist.sys.root_access", value, "0");
+        property_get("ro.build.type", build_type, "");
+        property_get("ro.slim.version", slim_version, "");
+
+        if (strlen(slim_version) > 0 && strcmp(build_type, "eng") != 0 && (atoi(value) & 2) != 2) {
+            WriteFdExactly(fd, "root access is disabled by system setting - enable in settings -> development options\n");
+            adb_close(fd);
+            return;
+        }
+
         property_set("service.adb.root", "1");
         WriteFdExactly(fd, "restarting adbd as root\n");
         adb_close(fd);

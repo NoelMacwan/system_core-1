@@ -10,8 +10,8 @@ import /init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
 
-# Include Glaze's extra init file
-import /init.glaze.rc
+# Include SLIM's extra init file
+import /init.slim.rc
 
 
 on early-init
